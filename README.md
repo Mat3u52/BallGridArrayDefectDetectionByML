@@ -64,8 +64,7 @@ Ball:
 
 Skrypt implementuje model klasyfikacji obrazów binarnych przy użyciu frameworków TensorFlow i Keras.
 
-Wybrałem TensorFlow w wersji > 2.0, ponieważ jest stabilniejsza. Również wykorzystuje grafy statyczne, ale w wersji > 2.0 także dynamiczne grafy obliczeniowe, przez co uzyskujemy większą elastyczność. 
-
+Wybrałem TensorFlow w wersji > 2.0, ponieważ jest stabilniejsza. TensorFlow 1.0 Również wykorzystuje grafy statyczne, ale w wersji > 2.0 także dynamiczne grafy obliczeniowe, przez co uzyskujemy większą elastyczność. 
 
 
 Implementuje architekturę CNN do klasyfikacji obrazów binarnych.
@@ -76,7 +75,7 @@ Proces przewidywania klasy obrazów testowych.
 Funkcjonalność:
 
 #### 1. Importowanie bibliotek
-Bibliotek:
+Biblioteka:
 
 - TensorFlow/Keras: Do budowania i trenowania sieci neuronowej.
 - Pillow (PIL): Do wstępnego przetwarzania danych obrazu.
@@ -146,8 +145,24 @@ Zapis wytrenowanego modelu w dwóch formatach:
 
         model.save_weights('model_weights.weights.h5')
         model.save('model_keras.keras')
+#### 7. Plot'y dokładności uczenia i straty uczenia
 
-#### 7. Testowa prognoza obrazu
+1. Wykres strat treningowych (Loss Plot)
+Opis: Przedstawia, jak strata (funkcja kosztu, np. cross-entropy) zmienia się w trakcie epok treningowych.
+Oś X: Numer epoki (Epoch) – odpowiada kolejnym iteracjom, w których model przechodzi przez cały zestaw danych treningowych.
+Oś Y: Wartość straty – miara błędu modelu, gdzie niższa wartość oznacza lepsze dopasowanie modelu do danych.
+Linia: Reprezentuje zmieniającą się wartość straty dla zestawu treningowego w każdej epoce.
+Cel: Wartość straty powinna systematycznie maleć w trakcie treningu, co wskazuje, że model staje się bardziej precyzyjny w dopasowywaniu się do danych.
+
+
+2. Wykres dokładności treningowej (Accuracy Plot)
+Opis: Przedstawia zmieniającą się dokładność klasyfikacji (lub innej miary trafności) podczas treningu.
+Oś X: Numer epoki (Epoch).
+Oś Y: Dokładność (Accuracy) – miara, jak często model poprawnie przewiduje wyniki. Wyrażana jako ułamek lub procent (wartości od 0 do 1 lub 0% do 100%).
+Linia: Pokazuje, jak dokładność modelu zmienia się w czasie.
+Cel: Wartość dokładności powinna rosnąć, co oznacza, że model coraz lepiej przewiduje dane.
+
+#### 8. Testowa prognoza obrazu
 Ładowanie obrazów z katalogu test/, wstępnie przetwarzanie każdego obrazu (zmieniając rozmiar, normalizując i rozszerzając wymiary) i użycie wytrenowanego modelu do tworzenia prognoz.
 
 - Wstępne przetwarzanie: Upewnienie się, że obrazy testowe pasują do wymiarów i skali użytych w treningu.
@@ -160,7 +175,7 @@ dla obrazu w test_images:
         prediction = 'pass' if result[0][0] >= 0.5 else 'fail'
         print(f"Obraz {image} jest: {prediction}")
 
-#### 8. Dane wyjściowe
+#### 9. Dane wyjściowe
 Wynik predykcji dla każdego obrazu testowego w formacie:
 Obraz 'nazwa pliku' jest: 'status'
 
@@ -170,7 +185,7 @@ Ten skrypt Pythona tworzy GUI przy użyciu tkinter do klasyfikacji obrazów z ws
 
 #### 1. Importowanie bibliotek
 
-Bibliotek:
+Biblioteka:
 
 - tkinter: GUI.
 - TensorFlow/Keras: Do budowania i trenowania sieci neuronowej.
@@ -183,3 +198,4 @@ Bibliotek:
 
 ## Bibliografia:
 - Raschka, Sebastian, and Vahid Mirjalili. *Python Machine Learning and deep learning*. 3rd ed., Packt Publishing, 2019.
+- Matthes, Eric. *Python Crash Course*: A Hands-On, Project-Based Introduction to Programming. 2nd ed., No Starch Press, 2019.
