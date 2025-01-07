@@ -18,8 +18,15 @@ PCB:
 BGA:
 <img src="https://www.fs-pcba.com/wp-content/uploads/2022/12/1-9.jpg" alt="BGA" width="200">
 
-Ball:
+BGA solder ball:
 <img src="https://epp-europe-news.com/wp-content/uploads/3/6/3603682.jpg" alt="Ball" width="200">
+
+X-Ray image:
+
+| Przykład dobrych połączeń                                                                                                                      | Przykład wadliwych połączeń                                                                                                                      |
+|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/good_image.jpg?raw=true" alt="Good BGA" width="200">  | <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/not_good_image.jpg?raw=true" alt="Bad BGA" width="200"> |
+| <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/single_good_ball.png?raw=true" alt="Good BGA" width="200">  | <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/single_not_good_ball.png?raw=true" alt="Good BGA" width="200"> |
 
 
 
@@ -67,7 +74,7 @@ Skrypt implementuje model klasyfikacji obrazów binarnych przy użyciu framework
 Wybrałem TensorFlow w wersji > 2.0, ponieważ jest stabilniejsza. TensorFlow 1.0 Również wykorzystuje grafy statyczne, ale w wersji > 2.0 także dynamiczne grafy obliczeniowe, przez co uzyskujemy większą elastyczność. 
 
 
-Implementuje architekturę CNN do klasyfikacji obrazów binarnych.
+Implementuje architekturę Convolutional Neural Network (CNN) do klasyfikacji obrazów binarnych.
 Automatyzuje ładowanie danych i wstępne przetwarzanie przy użyciu narzędzi Keras.
 Zapisuje wyszkolony model do ponownego użycia.
 Proces przewidywania klasy obrazów testowych.
