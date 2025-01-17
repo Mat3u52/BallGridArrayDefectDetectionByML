@@ -14,12 +14,18 @@ Przestrzeganie kryteriów IPC-A-610 dla zespołów BGA pomaga zapewnić niezawod
 
 PCB:
 <img src="https://static.wixstatic.com/media/74cd3b_773e6cd81fb1433e972e27dbf33c53bd~mv2_d_4000_3000_s_4_2.jpg" alt="PCB" width="200">
+- Źródło: [regulus-ems.com](https://www.regulus-ems.com/leaded-pcb-assembly)
 
 BGA:
 <img src="https://www.fs-pcba.com/wp-content/uploads/2022/12/1-9.jpg" alt="BGA" width="200">
+- Źródło: [madpcb.com](https://madpcb.com/glossary/pbga/)
+
 
 BGA solder ball:
 <img src="https://epp-europe-news.com/wp-content/uploads/3/6/3603682.jpg" alt="Ball" width="200">
+
+Źródło: [epp-europe-news.com](https://epp-europe-news.com/technology/applications/proper-inspection-strategy/)
+
 
 X-Ray image:
 
