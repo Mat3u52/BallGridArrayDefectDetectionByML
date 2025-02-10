@@ -1,4 +1,4 @@
-# BallGridArrayDefectDetectionByML
+# Wykrywanie wad Ball Grid Array za pomocą ML
 
 ### Rozpoznanie defektu typu void dla układu "Ball Grid Array" przy pomocy machine learning.
 
@@ -37,7 +37,7 @@ X-Ray image:
 
 
 ## 1. Przygotowanie zestawu danych
-- Informacje na temat przygotowanego wcześniej pliku .zip. Paczka zawiera zestaw różnych zdjęć ATG układu BGA po montażu w formacie .png 
+- Informacje na temat przygotowanego wcześniej pliku "Dataset.zip" Przygotowana paczka zawiera zestaw różnych formatów plików w tym zdjęci ATG układu BGA po montażu w formacie .png
   - Metoda "print_zip_summary":
   
           Podsumowanie zawartości pliku ZIP.
@@ -49,7 +49,8 @@ X-Ray image:
             Rozmiar pliku archiwum ZIP w bajtach.
             Całkowitą liczbę plików zawartych w archiwum.
             Listę ostatnich 5 plików w archiwum. Jeśli archiwum ZIP zawiera mniej niż 5 plików, wydrukuje je wszystkie.
-      
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/zipInfo.png?raw=true" alt="zipInfo" width="400" > 
+  
   - Metoda "unzip_precess":
         
         Wypakowuje pliki z archiwum ZIP do określonego katalogu, pokazując postęp wypakowywania.
@@ -57,21 +58,78 @@ X-Ray image:
   - Metoda "tree":
   
         Rekurencyjnie wyświetla zawartość katalogu w ustrukturyzowanym, hierarchicznym formacie.
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/treeInfo.png?raw=true" alt="tree" width="400" >
   
   - Metoda "show_samples":
   
         Losowo wybiera i wyświetla pięć obrazów .png z danego katalogu. Każdy obraz jest zmieniany na
         300x300 pikseli i wyświetlany w oknie pop-up przez 5 sekund. Na ten moment zestaw danych jest bardzo "zanieczyszczony" i nadmiarowy.
-
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/showSamples.png?raw=true" alt="showSamples" width="400" >
+  
   - Metoda "recognizer":
 
         Przetwarza obraz w celu zidentyfikowania największego okrągłego obiektu, 
         oblicza jego średnicę i powierzchnię oraz podświetla puste obszary w obrębie marginesu wokół wykrytego konturu.
         Funkcja zostaje wywołana w pętli 'for' w celu odseparowanie zdjęć z defektem i bez defektu. 
         Dodatkowo w katalogu 'bitmapDiagnostics' umieszczone zostają pliki diagnostyczne.
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/diagnostic.png?raw=true" alt="diagnostic" width="400" >
 
-## 2. Analiza danych (conda - notebook)
-### regresja liniowa
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/passFail.png?raw=true" alt="passFail" width="400" >
+
+## 2. Analiza danych (conda jupyter notebook)
+  Podczas procesu „recognizer” został wygenerowany plik "SolderBallsSize.csv", zawierający następujące dane:
+  - BallDiameter [px] – średnica kulki w pikselach
+  - BallArea [px] – powierzchnia kulki w pikselach
+  - VoidArea [px] – powierzchnia pustki w pikselach
+  - Status [bool] – status (wartość logiczna)
+
+  <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/df.png?raw=true" alt="Good BGA" width="400">
+
+  Wydzielamy pierwsze 1000 etykiet klasy odpowiadających statusom True oraz False i przekształcamy je w dwie kategorie symbolizowane liczbami całkowitymi: 1 (True) i -1 (False), które przypisujemy do wektora y.
+
+  Następnie, ze zbioru 1000 przykładów uczących wydzielamy drugą kolumnę cech (BallArea) oraz trzecią kolumnę (VoidArea), a uzyskane wartości przypisujemy do macierzy cech X. Tak skonstruowane dane możemy zwizualizować jako dwuwymiarowy wykres punktowy.
+
+  <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/scatterPlot.png?raw=true" alt="scatterPlot" width="400">
+
+  - Metoda "perceptron":
+    Pierwotna reguła uczenia perceptronu, opracowana przez Franka Rosenblatta, przedstawia się następująco i można ją opisać w kilku etapach:
+
+    1. Ustaw wagi na 0 lub niewielkie, losowe wartości.
+    2. Dla każdego przykładu uczącego 𝑥:
+         - Oblicz wartość wyjściową y.
+         - Zaktualizuj wagi.
+
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/perceptron.jpg?raw=true" alt="perceptron" width="800" >
+    
+        ppn = Perceptron(eta=0.1, n_iter=10)
+        ppn.fit(X,y)
+        plt.plot(range(1, len(ppn.errors_)+1), ppn.errors_, marker='o')
+        plt.xlabel('Epoki')
+        plt.ylabel('Liczba aktualizacji')
+        plt.show()
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/perceptronPlot.png?raw=true" alt="perceptron" width="800" >
+  
+  Zmniejszenie liczby aktualizacji: Na początku liczba aktualizacji jest wysoka (ponad 30), ale szybko maleje w kolejnych epokach. Oznacza to, że model stopniowo uczy się lepiej klasyfikować dane, co zmniejsza potrzebę aktualizacji wag.
+
+  Stabilizacja: Po kilku epokach (około 7-10) liczba aktualizacji osiąga zero. To wskazuje, że model nauczył się poprawnie klasyfikować wszystkie próbki w zbiorze treningowym (dla danych liniowo separowalnych).
+
+  Efektywność uczenia: Szybkie zmniejszenie liczby błędów na początku oznacza, że przyjęta wartość współczynnika uczenia (eta=0.1) oraz liczba epok (n_iter=10) są odpowiednie dla tego problemu.
+
+  Dane liniowo separowalne: Ponieważ liczba błędów osiąga zero, można przypuszczać, że zbiór danych jest liniowo separowalny.
+
+  - Metoda "plot_decision_regions"
+
+    Najpierw definiujemy liczbę barw (colors) i znaczników (markers), a następnie tworzymy mapę kolorów z listy barw za pomocą klasy ListedColormap. Następnie określamy minimalne i maksymalne wartości dwóch cech, które wykorzystujemy do wygenerowania siatki współrzędnych, tworząc tablice xx1 i xx2 za pomocą funkcji meshgrid.
+
+    Ponieważ klasyfikator został wytrenowany na dwóch wymiarach cech, konieczna jest modyfikacja tablic xx1 i xx2 oraz utworzenie macierzy o takiej samej liczbie kolumn, jak zbiór uczący. Dzięki temu możemy zastosować metodę predict do przewidywania etykiet klas dla poszczególnych elementów siatki.
+
+        plot_decision_regions(X, y, classifier=ppn)
+        plt.xlabel("BallArea [px]")
+        plt.ylabel("VoidArea [px]")
+        plt.legend(loc='upper left')
+        plt.show()
+    <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/decisionPlot.png?raw=true" alt="perceptron" width="800" >
+
 
 ## 3. Trenowanie modelu / TensorFlow 2
 
@@ -160,6 +218,8 @@ Zapis wytrenowanego modelu w dwóch formatach:
         model.save('model_keras.keras')
 #### 7. Plot'y dokładności uczenia i straty uczenia
 
+<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/TrainingLossAndAccuracy.png?raw=true" alt="TrainingLossAndAccuracy" width="400" >
+
 1. Wykres strat treningowych (Loss Plot)
 Opis: Przedstawia, jak strata (funkcja kosztu, np. cross-entropy) zmienia się w trakcie epok treningowych.
 Oś X: Numer epoki (Epoch) – odpowiada kolejnym iteracjom, w których model przechodzi przez cały zestaw danych treningowych.
@@ -195,6 +255,8 @@ Obraz 'nazwa pliku' jest: 'status'
 ## 4. Przewidywanie
 
 Ten skrypt Pythona tworzy GUI przy użyciu tkinter do klasyfikacji obrazów z wstępnie wytrenowanym modelem Keras. Użytkownicy mogą przesłać obraz .png, który jest wyświetlany i wstępnie przetwarzany (zmieniony rozmiar, znormalizowany i wsadowy) przed przekazaniem do modelu w celu prognozowania. Wynik, „Pass” lub „Fail” (klasyfikacja binarna oparta na progu 0,5), jest wyświetlany w GUI. Używa Pillow do obsługi obrazów i tensorflow.keras do prognozowania modelu.
+
+<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/prediction.png?raw=true" alt="prediction" width="400" >
 
 #### 1. Importowanie bibliotek
 
