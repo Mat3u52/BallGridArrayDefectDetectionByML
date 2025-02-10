@@ -208,6 +208,8 @@ Każda epoka przetwarza wszystkie partie treningowe zdefiniowane przez steps_per
         epochs=128
         )
 
+<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/Epochs.png?raw=true" alt="Epochs" width="400" >
+
 #### 6. Zapisywanie modelu
 Zapis wytrenowanego modelu w dwóch formatach:
 
@@ -247,6 +249,8 @@ dla obrazu w test_images:
         result = model.predict(img)
         prediction = 'pass' if result[0][0] >= 0.5 else 'fail'
         print(f"Obraz {image} jest: {prediction}")
+
+<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/test.png?raw=true" alt="test" width="400" >
 
 #### 9. Dane wyjściowe
 Wynik predykcji dla każdego obrazu testowego w formacie:
