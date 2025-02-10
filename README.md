@@ -218,7 +218,7 @@ Zapis wytrenowanego modelu w dwóch formatach:
         model.save('model_keras.keras')
 #### 7. Plot'y dokładności uczenia i straty uczenia
 
-<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/TrainingLossAndAccuracy.png?raw=true" alt="TrainingLossAndAccuracy" width="400" >
+<img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/TrainingLossAndAccuracy.png?raw=true" alt="TrainingLossAndAccuracy" width="800" >
 
 1. Wykres strat treningowych (Loss Plot)
 Opis: Przedstawia, jak strata (funkcja kosztu, np. cross-entropy) zmienia się w trakcie epok treningowych.
