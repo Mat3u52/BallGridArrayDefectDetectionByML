@@ -37,7 +37,7 @@ X-Ray image:
 
 
 ## 1. Przygotowanie zestawu danych
-- Informacje na temat przygotowanego wcześniej pliku "Dataset.zip" Przygotowana paczka zawiera zestaw różnych formatów plików w tym zdjęci ATG układu BGA po montażu w formacie .png
+- Informacje na temat przygotowanego wcześniej pliku "Dataset.zip" Przygotowana paczka zawiera zestaw różnych formatów plików w tym zdjęcia ATG układu BGA po montażu w formacie .png
   - Metoda "print_zip_summary":
   
           Podsumowanie zawartości pliku ZIP.
@@ -92,7 +92,7 @@ X-Ray image:
   <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/scatterPlot.png?raw=true" alt="scatterPlot" width="400">
 
   - Metoda "perceptron":
-    Pierwotna reguła uczenia perceptronu, opracowana przez Franka Rosenblatta, przedstawia się następująco i można ją opisać w kilku etapach:
+    Pierwotna reguła uczenia perceptronu (klasyfikator binarny), opracowana przez Franka Rosenblatta, przedstawia się następująco i można ją opisać w kilku etapach:
 
     1. Ustaw wagi na 0 lub niewielkie, losowe wartości.
     2. Dla każdego przykładu uczącego 𝑥:
@@ -222,20 +222,49 @@ Zapis wytrenowanego modelu w dwóch formatach:
 
 <img src="https://github.com/Mat3u52/BallGridArrayDefectDetectionByML/blob/main/examples/TrainingLossAndAccuracy.png?raw=true" alt="TrainingLossAndAccuracy" width="800" >
 
-1. Wykres strat treningowych (Loss Plot)
-Opis: Przedstawia, jak strata (funkcja kosztu, np. cross-entropy) zmienia się w trakcie epok treningowych.
-Oś X: Numer epoki (Epoch) – odpowiada kolejnym iteracjom, w których model przechodzi przez cały zestaw danych treningowych.
-Oś Y: Wartość straty – miara błędu modelu, gdzie niższa wartość oznacza lepsze dopasowanie modelu do danych.
-Linia: Reprezentuje zmieniającą się wartość straty dla zestawu treningowego w każdej epoce.
-Cel: Wartość straty powinna systematycznie maleć w trakcie treningu, co wskazuje, że model staje się bardziej precyzyjny w dopasowywaniu się do danych.
+Model osiąga bardzo wysoką dokładność (blisko 1.0) zarówno na danych treningowych, jak i walidacyjnych. To sugeruje, że model dobrze nauczył się rozpoznawać wzorce w danych.
 
+1. Wykres strat treningowych (Loss Plot)
+
+    Opis: Przedstawia, jak strata (funkcja kosztu, np. cross-entropy) zmienia się w trakcie epok treningowych.
+
+    Oś X: Numer epoki (Epoch) – odpowiada kolejnym iteracjom, w których model przechodzi przez cały zestaw danych treningowych.
+
+    Oś Y: Wartość straty – miara błędu modelu, gdzie niższa wartość oznacza lepsze dopasowanie modelu do danych.
+    
+    Linia: Reprezentuje zmieniającą się wartość straty dla zestawu treningowego w każdej epoce.
+    
+    Cel: Wartość straty powinna systematycznie maleć w trakcie treningu, co wskazuje, że model staje się bardziej precyzyjny w dopasowywaniu się do danych.
 
 2. Wykres dokładności treningowej (Accuracy Plot)
-Opis: Przedstawia zmieniającą się dokładność klasyfikacji (lub innej miary trafności) podczas treningu.
-Oś X: Numer epoki (Epoch).
-Oś Y: Dokładność (Accuracy) – miara, jak często model poprawnie przewiduje wyniki. Wyrażana jako ułamek lub procent (wartości od 0 do 1 lub 0% do 100%).
-Linia: Pokazuje, jak dokładność modelu zmienia się w czasie.
-Cel: Wartość dokładności powinna rosnąć, co oznacza, że model coraz lepiej przewiduje dane.
+    
+    Opis: Przedstawia zmieniającą się dokładność klasyfikacji (lub innej miary trafności) podczas treningu. 
+
+    Oś X: Numer epoki (Epoch). 
+
+    Oś Y: Dokładność (Accuracy) – miara, jak często model poprawnie przewiduje wyniki. Wyrażana jako ułamek lub procent (wartości od 0 do 1 lub 0% do 100%). 
+
+    Linia: Pokazuje, jak dokładność modelu zmienia się w czasie.
+
+    Cel: Wartość dokładności powinna rosnąć, co oznacza, że model coraz lepiej przewiduje dane.
+
+3. Duża zmienność w dokładności walidacyjnej:
+
+    Dokładność walidacyjna mocno się waha, czasem spadając gwałtownie, co może wskazywać na:
+
+    Przeuczenie (overfitting) – Model za bardzo dopasowuje się do danych treningowych, przez co jest mniej odporny na nowe dane.
+
+    Niezrównoważony zbiór danych walidacyjnych – Jeśli klasy nie są równomiernie reprezentowane w danych walidacyjnych, dokładność może się znacznie wahać.
+
+    Zbyt duży learning rate – Może powodować niestabilne dostrajanie wag, co skutkuje dużymi wahaniami.
+
+
+Dodanie Dropoutu do warstw ukrytych, aby poprawić uogólnianie modelu.
+
+Użycie L2 regularization na wagach.
+
+Zastosowanie augmentacji (rotacje, odbicia lustrzane, skalowanie).
+
 
 #### 8. Testowa prognoza obrazu
 Ładowanie obrazów z katalogu test/, wstępnie przetwarzanie każdego obrazu (zmieniając rozmiar, normalizując i rozszerzając wymiary) i użycie wytrenowanego modelu do tworzenia prognoz.
